@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Users</title>
+</head>
+<body>
+
+<h2>Registered Users</h2>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Sex</th>
+        <th>Postal Code</th>
+        <th>City</th>
+        <th>Address</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- Loop through list -->
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.phoneNumber}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.sex}"></td>
+        <td th:text="${user.postalCode}"></td>
+        <td th:text="${user.city}"></td>
+        <td th:text="${user.address}"></td>
+    </tr>
+    </tbody>
+
+</table>
+
+</body>
+</html>

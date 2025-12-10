@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+</head>
+<body>
+
+<h2>User Registration Form</h2>
+<p th:if="${message}" th:text="${message}"></p>
+
+<form th:action="@{/saveUser}" th:object="${userForm}" method="post">
+
+    <label>First Name:</label>
+    <input type="text" th:field="*{firstName}" required>
+    <br><br>
+
+    <label>Last Name:</label>
+    <input type="text" th:field="*{lastName}" required>
+    <br><br>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" required>
+    <br><br>
+
+    <label>Password:</label>
+    <input type="password" th:field="*{Password}" required>
+    <br><br>
+
+    <label>Confirm Password:</label>
+    <input type="password" th:field="*{ConfirmPassword}" required>
+    <br><br>
+
+    <label>Phone Number:</label>
+    <input type="text" th:field="*{phoneNumber}">
+    <br><br>
+
+    <label>Age:</label>
+    <input type="number" th:field="*{age}">
+    <br><br>
+
+    <label>Sex:</label>
+    <select th:field="*{sex}">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
+    <br><br>
+
+    <label>Postal Code:</label>
+    <input type="number" th:field="*{postalCode}">
+    <br><br>
+
+    <label>City:</label>
+    <input type="text" th:field="*{city}">
+    <br><br>
+
+    <label>Address:</label>
+    <input type="text" th:field="*{address}">
+    <br><br>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+</body>
+</html>
