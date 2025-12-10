@@ -28,4 +28,5 @@ public class UserInfoEntity {
     private int postalCode;
     private String city;
     private String address;
+    private boolean isActive = true;
 }
