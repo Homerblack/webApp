@@ -3,6 +3,7 @@ package crud.webApp.controller;
 
 import crud.webApp.entity.UserInfoEntity;
 import crud.webApp.repository.UserInfoRepository;
+import crud.webApp.service.impl.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +13,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
-private final UserInfoRepository userInfoRepository;
+private final UserService userService;
 
-public UserController(UserInfoRepository userInfoRepository) {
-		this.userInfoRepository = userInfoRepository;
+public UserController(UserService userService) {
+    this.userService = userService;
+
 }
 
     //displaying the form on the page
@@ -27,8 +29,8 @@ public UserController(UserInfoRepository userInfoRepository) {
 
     //this is for submitting the page or saving the users
     @PostMapping("/saveUser")
-    public String SaveUsers(@ModelAttribute UserInfoEntity userInfoEntity, RedirectAttributes redirectAttributes) {
-        userInfoRepository.save(userInfoEntity);
+    public String SaveUsers(@ModelAttribute UserInfoEntity user, RedirectAttributes redirectAttributes) {
+        userService.saveUser(user);
         redirectAttributes.addFlashAttribute("message", "User has been saved successfully");
         return "redirect:/user";
     }
@@ -38,7 +40,7 @@ public UserController(UserInfoRepository userInfoRepository) {
     //getting all the users registered in the users table
     @GetMapping("/users")
     public String ShowUsers(Model model) {
-    model.addAttribute("users", userInfoRepository.findAll());
+    model.addAttribute("users", userService.getActiveUsers());
     return "usersList";
     }
 }
