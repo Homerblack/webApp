@@ -5,6 +5,7 @@ import crud.webApp.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -29,5 +30,15 @@ public class UserService {
     public List<UserInfoEntity> getAllUsers() {
         return userInfoRepository.findAll();
     }
+
+    //get users by id
+    public Optional<UserInfoEntity> getUserById(long id) {
+        return userInfoRepository.findById(id);
+    }
+
+    public void  deleteById(long id) {
+       userInfoRepository.deleteById(id);
+    }
+
 
 }

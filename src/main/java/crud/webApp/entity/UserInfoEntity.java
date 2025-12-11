@@ -20,8 +20,8 @@ public class UserInfoEntity {
     private String firstName;
     private String lastName;
     private String email;
-    private String Password;
-    private String ConfirmPassword;
+    private String password;
+    private String confirmPassword;
     private String phoneNumber;
     private int age ;
     private String sex;
