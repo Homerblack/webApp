@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Users</title>
+</head>
+<body>
+
+<h2>Registered Users</h2>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Sex</th>
+        <th>Postal Code</th>
+        <th>City</th>
+        <th>Address</th>
+        <th>Active</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- Loop through list -->
+    <tr th:each="user : ${users}">
+
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.phoneNumber}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.sex}"></td>
+        <td th:text="${user.postalCode}"></td>
+        <td th:text="${user.city}"></td>
+        <td th:text="${user.address}"></td>
+        <td th:text="${user.isActive}"></td>
+
+        <td>
+            <form th:action="@{'/user/delete/' + ${user.id}}"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('Are you sure you want to delete this user?');">
+                <button type="submit"
+                        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm font-medium">
+                    Delete
+                </button>
+            </form>
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>
