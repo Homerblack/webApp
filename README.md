@@ -56,7 +56,7 @@ cd webApp
 mvn spring-boot:run
 
 3. Open in browser
-http://localhost:8080/user
+http://localhost:8080/
 
 **Screenshots (Optional but highly recommended!)**
 
