@@ -1,66 +1,185 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 
-<h2>User Registration Form</h2>
-<p th:if="${message}" th:text="${message}"></p>
+<div class="max-w-2xl w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
 
-<form th:action="@{/saveUser}" th:object="${userForm}" method="post">
+    <div>
+        <h2 class="text-3xl font-bold text-center text-gray-900">Create your account</h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            Please fill in all the fields below
+        </p>
+    </div>
 
-    <label>First Name:</label>
-    <input type="text" th:field="*{firstName}" required>
-    <br><br>
+    <!-- Server-side error/success message -->
+    <div th:if="${message}"
+         class="rounded-md p-4 text-sm font-medium"
+         th:classappend="${message.contains('success') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}"
+         th:text="${message}">
+    </div>
 
-    <label>Last Name:</label>
-    <input type="text" th:field="*{lastName}" required>
-    <br><br>
+    <form th:action="@{/saveUser}" th:object="${userForm}" method="post" class="space-y-6">
 
-    <label>Email:</label>
-    <input type="email" th:field="*{email}" required>
-    <br><br>
+        <!-- Name Row -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                <input id="firstName"
+                       type="text"
+                       th:field="*{firstName}"
+                       required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                       placeholder="John"/>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="mt-1 text-sm text-red-600"></p>
+            </div>
 
-    <label>Password:</label>
-    <input type="password" th:field="*{Password}" required>
-    <br><br>
+            <div>
+                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                <input id="lastName"
+                       type="text"
+                       th:field="*{lastName}"
+                       required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                       placeholder="Doe"/>
+                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="mt-1 text-sm text-red-600"></p>
+            </div>
+        </div>
 
-    <label>Confirm Password:</label>
-    <input type="password" th:field="*{ConfirmPassword}" required>
-    <br><br>
+        <!-- Email -->
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+            <input id="email"
+                   type="email"
+                   th:field="*{email}"
+                   required
+                   autocomplete="email"
+                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                   placeholder="you@example.com"/>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="mt-1 text-sm text-red-600"></p>
+        </div>
 
-    <label>Phone Number:</label>
-    <input type="text" th:field="*{phoneNumber}">
-    <br><br>
+        <!-- Password + Confirm Password -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input id="password"
+                       type="password"
+                       th:field="*{password}"
+                       required
+                       autocomplete="new-password"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"/>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="mt-1 text-sm text-red-600"></p>
+            </div>
 
-    <label>Age:</label>
-    <input type="number" th:field="*{age}">
-    <br><br>
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <input id="confirmPassword"
+                       type="password"
+                       th:field="*{confirmPassword}"
+                       required
+                       autocomplete="new-password"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"/>
+                <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="mt-1 text-sm text-red-600"></p>
+            </div>
+        </div>
 
-    <label>Sex:</label>
-    <select th:field="*{sex}">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-    </select>
-    <br><br>
+        <!-- Phone & Age -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input id="phoneNumber"
+                       type="text"
+                       th:field="*{phoneNumber}"
+                       required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                       placeholder="+1234567890"/>
+            </div>
 
-    <label>Postal Code:</label>
-    <input type="number" th:field="*{postalCode}">
-    <br><br>
+            <div>
+                <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+                <input id="age"
+                       type="number"
+                       min="13"
+                       max="120"
+                       th:field="*{age}"
+                       required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"/>
+            </div>
+        </div>
 
-    <label>City:</label>
-    <input type="text" th:field="*{city}">
-    <br><br>
+        <!-- Sex -->
+        <div>
+            <label for="sex" class="block text-sm font-medium text-gray-700">Sex</label>
+            <select id="sex"
+                    th:field="*{sex}"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border">
+                <option value="" disabled selected>Select your gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other / Prefer not to say</option>
+            </select>
+        </div>
 
-    <label>Address:</label>
-    <input type="text" th:field="*{address}">
-    <br><br>
+        <!-- Address Fields -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+                <label for="postalCode" class="block text-sm font-medium text-gray-700">Postal Code</label>
+                <input id="postalCode"
+                       type="text"
+                       th:field="*{postalCode}"
+                       required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"/>
+            </div>
 
-    <button type="submit">Submit</button>
+            <div>
+                <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                <input id="city"
+                       type="text"
+                       th:field="*{city}"
+                       required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"/>
+            </div>
+        </div>
 
-</form>
+        <div>
+            <label for="address" class="block text-sm font-medium text-gray-700">Street Address</label>
+            <input id="address"
+                   type="text"
+                   th:field="*{address}"
+                   required
+                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+                   placeholder="123 Main St"/>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-between items-center pt-6">
+            <!-- This will take you to Start page  -->
+            <a th:href="@{/}" class="text-sm font-medium text-gray-600 hover:text-gray-800">
+                ← Back to Users List
+            </a>
+
+            <button type="submit"
+                    class="px-8 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition shadow-md">
+                Register
+            </button>
+        </div>
+
+        <!-- Optional link to login
+        <div class="text-center text-sm">
+            Already have an account?
+            <a th:href="@{/login}" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a>
+        </div>
+        -->
+    </form>
+</div>
 
 </body>
 </html>
