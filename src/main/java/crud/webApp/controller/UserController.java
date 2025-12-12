@@ -32,8 +32,6 @@ public UserController(UserService userService) {
     }
 
 
-
-
     /// inserting Users
     //inserting or saving Users
     //This is for submitting the page or saving the users
@@ -46,21 +44,14 @@ public UserController(UserService userService) {
 
 
 
-
-
-
     /// Updating Users
     //This is for updating user
     //Updating Users
-    @GetMapping ("/updateUserList")
-    public String updateUsers(Model model) {
-    model.addAttribute("users", userService.getActiveUsers());
-    return "usersListUpdate";
+    @GetMapping("/updateUserList")
+    public String showUpdateUserList(Model model) {
+        model.addAttribute("users", userService.getActiveUsers());
+        return "usersListUpdate";
     }
-
-
-
-
 
     /// This will return the form for Selected user
     //This is updating Form
@@ -76,11 +67,9 @@ public UserController(UserService userService) {
 
 
 
-
-
     //Updating Users
     //This is Updating the certain user if needed
-    @PostMapping("/user/update/updateUser")
+    @PostMapping("updateUser")
     public String updateUsers(@ModelAttribute UserInfoEntity user, Model model) {
 
         UserInfoEntity existingUser = userService.getUserById(user.getId())
@@ -98,11 +87,9 @@ public UserController(UserService userService) {
         existingUser.setAddress(user.getAddress());
         existingUser.setPostalCode((user.getPostalCode()));
         existingUser.setCity(user.getCity());
-
         userService.saveUser(existingUser);
-        model.addAttribute("users", userService.getActiveUsers());
         model.addAttribute("message", "User has been updated successfully");
-        return "usersListUpdate";
+        return "redirect:/updateUserList";
     }
 
 
@@ -112,7 +99,7 @@ public UserController(UserService userService) {
     //getting all the users registered in the users table
     @GetMapping("/users")
     public String ShowUsers(Model model) {
-    model.addAttribute("users", userService.getActiveUsers());
+    model.addAttribute("users", userService.getAllUsers());
     return "usersList";
     }
 
@@ -127,7 +114,6 @@ public UserController(UserService userService) {
 
 
 
-
     //This is for Deleting  user
     //Deleting  Users
     @PostMapping ("/user/delete/{id}")
@@ -138,8 +124,4 @@ public UserController(UserService userService) {
         model.addAttribute("users", userService.getActiveUsers());
         return "usersListDelete";
     }
-
-
-
-
 }

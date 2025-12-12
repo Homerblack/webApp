@@ -1,63 +1,155 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>All Users</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User - Select to Remove</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body>
 
-<h2>Registered Users</h2>
+<body class="bg-gray-50 min-h-screen">
 
-<table border="1" cellpadding="10">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Age</th>
-        <th>Sex</th>
-        <th>Postal Code</th>
-        <th>City</th>
-        <th>Address</th>
-        <th>Active</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
+<!-- Main Container -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <tbody>
-    <!-- Loop through list -->
-    <tr th:each="user : ${users}">
+    <!-- Header Section -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-gray-900 mb-3">
+            Delete User
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Select a user below to <span class="text-red-600 font-semibold">permanently delete</span> their account
+        </p>
+        <p class="text-sm text-red-600 mt-3 font-medium bg-red-50 inline-block px-4 py-2 rounded-full">
+            Warning: This action cannot be undone!
+        </p>
+    </div>
 
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.phoneNumber}"></td>
-        <td th:text="${user.age}"></td>
-        <td th:text="${user.sex}"></td>
-        <td th:text="${user.postalCode}"></td>
-        <td th:text="${user.city}"></td>
-        <td th:text="${user.address}"></td>
-        <td th:text="${user.isActive}"></td>
+    <!-- Back to Home Button -->
+    <div class="mb-8 text-left">
+        <a th:href="@{/}" class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Home
+        </a>
+    </div>
 
-        <td>
-            <form th:action="@{'/user/delete/' + ${user.id}}"
-                  method="post"
-                  style="display:inline;"
-                  onsubmit="return confirm('Are you sure you want to delete this user?');">
-                <button type="submit"
-                        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm font-medium">
-                    Delete
-                </button>
-            </form>
-        </td>
+    <!-- Success / Error Message -->
+    <div th:if="${message}"
+         class="mb-8 rounded-lg p-5 text-center font-medium shadow-sm border"
+         th:classappend="${message.contains('deleted') or ${message.contains('success')} ?
+             'bg-green-100 text-green-800 border-green-300' : 'bg-red-100 text-red-800 border-red-300'}"
+         th:text="${message}">
+        <!-- e.g., "User deleted successfully" -->
+    </div>
 
-    </tr>
+    <!-- Delete Users Table Card -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
 
-    </tbody>
+        <!-- Responsive Table Wrapper -->
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto">
+                <thead class="bg-gradient-to-r from-red-600 to-rose-700 text-white">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">ID</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">First Name</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Last Name</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Phone</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Age</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Sex</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">City</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Action</th>
+                </tr>
+                </thead>
 
-</table>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                <!-- Loop through users -->
+                <tr th:each="user : ${users}"
+                    class="hover:bg-red-50 transition duration-200">
+
+                    <td class="px-6 py-5 text-sm font-medium text-gray-900" th:text="${user.id}">1</td>
+                    <td class="px-6 py-5 text-sm font-medium text-gray-800" th:text="${user.firstName}">John</td>
+                    <td class="px-6 py-5 text-sm text-gray-700" th:text="${user.lastName}">Doe</td>
+                    <td class="px-6 py-5 text-sm text-gray-600 font-mono text-xs" th:text="${user.email}">john@example.com</td>
+                    <td class="px-6 py-5 text-sm text-gray-700" th:text="${user.phoneNumber}">+1234567890</td>
+                    <td class="px-6 py-5 text-sm text-center text-gray-700" th:text="${user.age}">28</td>
+
+                    <!-- Sex Badge -->
+                    <td class="px-6 py-5 text-sm">
+                                <span th:switch="${user.sex}">
+                                    <span th:case="'Male'" class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Male</span>
+                                    <span th:case="'Female'" class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">Female</span>
+                                    <span th:case="*" class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Other</span>
+                                </span>
+                    </td>
+
+                    <td class="px-6 py-5 text-sm text-gray-700" th:text="${user.city}">New York</td>
+
+                    <!-- Active Status -->
+                    <td class="px-6 py-5 text-sm text-center">
+                                <span th:if="${user.isActive}"
+                                      class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Active
+                                </span>
+                        <span th:unless="${user.isActive}"
+                              class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                    Inactive
+                                </span>
+                    </td>
+
+                    <!-- Delete Button - YOUR ORIGINAL URL PRESERVED -->
+                    <td class="px-6 py-5 text-center">
+                        <form th:action="@{'/user/delete/' + ${user.id}}"
+                              method="post"
+                              style="display: inline;"
+                              onsubmit="return confirm('⚠️ Are you ABSOLUTELY sure you want to delete this user?\n\nThis action CANNOT be undone.');">
+                            <button type="submit"
+                                    class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-2.5 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(users)}"
+             class="text-center py-20 px-6 bg-gray-50">
+            <svg class="w-20 h-20 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <p class="text-xl font-semibold text-gray-700">No users to delete</p>
+            <p class="text-gray-500 mt-2">All users have been removed or none exist yet.</p>
+            <a th:href="@{/userForm}"
+               class="mt-6 inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                Create New User
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-12 text-center text-sm text-gray-500">
+        <p>Homer © 2025 • Delete User Panel • <span class="text-red-600 font-medium">Use with caution</span></p>
+    </div>
+</div>
 
 </body>
 </html>
