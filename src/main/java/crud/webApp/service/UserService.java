@@ -1,4 +1,4 @@
-package crud.webApp.service.impl;
+package crud.webApp.service;
 
 import crud.webApp.entity.UserInfoEntity;
 import crud.webApp.repository.UserInfoRepository;
@@ -21,12 +21,12 @@ public class UserService {
     }
 
 
-    //get all the active users
+    //save all users
     public UserInfoEntity saveUser(UserInfoEntity  user) {
        return userInfoRepository.save(user);
     }
 
-    //get all the active users
+    //get all the  users
     public List<UserInfoEntity> getAllUsers() {
         return userInfoRepository.findAll();
     }

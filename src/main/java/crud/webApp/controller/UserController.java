@@ -2,8 +2,7 @@ package crud.webApp.controller;
 
 
 import crud.webApp.entity.UserInfoEntity;
-import crud.webApp.repository.UserInfoRepository;
-import crud.webApp.service.impl.UserService;
+import crud.webApp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
 
 @Controller
 public class UserController {
