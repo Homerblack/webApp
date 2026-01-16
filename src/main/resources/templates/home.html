@@ -86,6 +86,26 @@
                 <span>Delete User</span>
             </a>
 
+            <!-- Register Room User  -->
+            <a th:href="@{/roomUserForm}"
+               class="group flex items-center justify-center gap-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold text-lg py-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>Room User Form</span>
+            </a>
+
+            <!-- Login  User  -->
+            <a th:href="@{/userLogin}"
+               class="group flex items-center justify-center gap-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold text-lg py-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>User Login</span>
+            </a>
+
         </div>
 
         <!-- Footer Note (Optional) -->

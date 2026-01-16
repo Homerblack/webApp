@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Room User</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
+
+<div class="container mx-auto p-8 max-w-5xl">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+
+        <!-- Header Section -->
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-8">
+            <h1 class="text-4xl font-bold text-center mb-2">
+                Welcome back, <span th:text="${user.firstName}"></span>!
+            </h1>
+            <p class="text-center text-indigo-100 text-lg">
+                Manage your properties and rentals easily
+            </p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-8">
+
+            <!-- User Info Card -->
+            <div class="bg-gray-50 rounded-xl p-6 mb-8 border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Your Profile</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
+                    <div>
+                        <p><strong>Full Name:</strong>
+                            <span th:text="${user.firstName + ' ' + user.lastName}"></span>
+                        </p>
+                        <p><strong>Age:</strong> <span th:text="${user.age}"></span></p>
+                    </div>
+                    <div>
+                        <p><strong>District:</strong> <span th:text="${user.district}"></span></p>
+                        <p><strong>User ID:</strong> <span th:text="${user.id}"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+                <!-- Add Property Button -->
+                <a th:href="@{/addPropertyForm}"
+                   class="block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-center py-6 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-200">
+                    <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span class="text-xl">Add New Property</span>
+                    <p class="text-indigo-200 mt-2">List a room or house for rent</p>
+                </a>
+
+                <!-- View My Properties / Work Button -->
+                <a th:href="@{/my-properties}"
+                   class="block bg-green-600 hover:bg-green-700 text-white font-semibold text-center py-6 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-200">
+                    <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2m-8 0h8"></path>
+                    </svg>
+                    <span class="text-xl">My Properties & Work</span>
+                    <p class="text-green-200 mt-2">View and manage your listings</p>
+                </a>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="text-center pt-6 border-t border-gray-200">
+                <a th:href="@{/logout}" class="text-red-600 hover:text-red-800 font-medium text-lg">
+                    Logout
+                </a>
+                <span class="text-gray-500 mx-4">|</span>
+                <a th:href="@{/}" class="text-indigo-600 hover:text-indigo-700 font-medium text-lg">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
