@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Listings - Room Rental</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .photo-container { overflow: hidden; }
+        .photo-container img { transition: transform 0.5s ease; }
+        .card:hover .photo-container img { transform: scale(1.08); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
+                <span th:if="${user != null}">
+                    <span th:text="${user.firstName ?: 'User'}"></span>'s Listings
+                </span>
+                <span th:unless="${user != null}">Your Listings</span>
+            </h1>
+            <p class="mt-3 text-lg text-gray-600">
+                <span th:text="${properties?.size() ?: 0}"></span> active propert<span th:text="${properties?.size() == 1 ? 'y' : 'ies'}"></span>
+            </p>
+        </div>
+
+        <a th:href="@{/addPropertyForm}"
+           class="inline-flex items-center px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add New Property
+        </a>
+    </div>
+
+    <!-- No properties -->
+    <div th:if="${properties == null or #lists.isEmpty(properties)}"
+         class="bg-white rounded-2xl shadow-xl p-12 text-center max-w-2xl mx-auto">
+        <div class="mx-auto w-24 h-24 mb-6 text-indigo-300">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">No listings yet</h2>
+        <p class="text-lg text-gray-600 mb-8 max-w-md mx-auto">
+            Start adding your rooms or apartments to attract tenants.
+        </p>
+        <a th:href="@{/addPropertyForm}"
+           class="inline-block px-10 py-5 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
+            Add Your First Listing
+        </a>
+    </div>
+
+    <!-- Properties Grid -->
+    <div th:unless="${properties == null or #lists.isEmpty(properties)}"
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+
+        <div th:each="prop : ${properties}"
+             class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden card border border-gray-100">
+
+            <!-- Photo -->
+            <div class="photo-container h-56 bg-gradient-to-br from-gray-100 to-gray-200 relative">
+                <img th:if="${prop.images != null and not #lists.isEmpty(prop.images)}"
+                     th:src="${prop.images[0].filePath}"
+                     th:alt="${prop.title != null ? prop.title + ' - main photo' : 'Property photo'}"
+                     class="w-full h-full object-cover" />
+
+                <div th:unless="${prop.images != null and not #lists.isEmpty(prop.images)}"
+                     class="absolute inset-0 flex items-center justify-center text-gray-400 text-lg font-medium">
+                    No photo
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2"
+                    th:text="${prop.title ?: 'Untitled Listing'}"></h3>
+
+                <div class="flex items-baseline gap-3 mb-5">
+                    <span class="text-3xl font-bold text-indigo-600">
+                        NPR <span th:text="${prop.rentAmount ?: '—'}"></span>
+                    </span>
+                    <span class="text-sm text-gray-500 font-medium">/ month</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-6">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span th:text="${prop.district ?: 'Unknown'}"></span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span><span th:text="${prop.bedrooms ?: 0}"></span> bed<span th:if="${prop.bedrooms != 1}">s</span></span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-4 mt-2">
+                    <a th:href="@{/property/{id}(id=${prop.id})}"
+                       class="flex-1 text-center py-3 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium rounded-lg transition">
+                        View Details
+                    </a>
+                    <a th:href="@{/editProperty/{id}(id=${prop.id})}"
+                       class="flex-1 text-center py-3 px-4 bg-green-50 hover:bg-green-100 text-green-700 font-medium rounded-lg transition">
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

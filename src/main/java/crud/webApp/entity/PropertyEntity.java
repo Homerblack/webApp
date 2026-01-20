@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -20,7 +17,7 @@ public class PropertyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long propertyId ;
+    private Long id ;
 
     //This one is form the session
     @Column(name = "user_id", nullable = false)
@@ -65,9 +62,16 @@ public class PropertyEntity {
     private Boolean petsAllowed;
     private Boolean smokingAllowed;
 
-    // Custom Extra Fields (user-defined key-value pairs)
-    //@Column(columnDefinition = "JSON", nullable = true)
-    //private String extraFields;
+
+    // I have no idea how element collection works and collection table works and how join column works
+    @ElementCollection
+    @CollectionTable(
+            name = "property_custom_fields",  // Separate table for customs
+            joinColumns = @JoinColumn(name = "property_id")
+    )
+    @MapKeyColumn(name = "field_key")     // Column for keys
+    @Column(name = "field_value")         // Column for values (adjust length if needed, e.g., @Column(length = 1024))
+    private Map<String, String> customFields = new LinkedHashMap<>();
 
     // Timestamps
     @Column(name = "created_at")
