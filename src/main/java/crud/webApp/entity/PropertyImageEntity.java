@@ -15,7 +15,7 @@ public class PropertyImageEntity {
     @Column(name = "file_name")
     private String fileName;
 
-    @Column(name = "file_path")
+    @Column(name = "file_path", columnDefinition = "TEXT")
     private String filePath;
 
     @Column(name = "is_primary")

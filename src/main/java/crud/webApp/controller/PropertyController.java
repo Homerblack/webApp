@@ -2,6 +2,7 @@ package crud.webApp.controller;
 
 
 import crud.webApp.dto.PropertyRegistrationDto;
+import crud.webApp.entity.PropertyEntity;
 import crud.webApp.entity.RoomUserInfoEntity;
 import crud.webApp.service.PropertyService;
 import jakarta.servlet.http.HttpSession;
@@ -10,11 +11,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PropertyController {
@@ -74,12 +79,46 @@ public class PropertyController {
 
     ///  Adding property
     @PostMapping("/registerProperty")
-    public String RegisterProperty(@ModelAttribute PropertyRegistrationDto property, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String RegisterProperty(@ModelAttribute PropertyRegistrationDto property,
+                                   @RequestParam("images") MultipartFile[] images,
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
         RoomUserInfoEntity loggedInUser = (RoomUserInfoEntity) session.getAttribute("loggedInUser");
 
+        property.setImages(images);
 
         propertyService.saveProperty(property, loggedInUser.getId());
         redirectAttributes.addFlashAttribute("message", "Registration successful");
         return "redirect:/addPropertyForm" ;
     }
+
+    // This is to display all the property listed by the certain user
+    @GetMapping("/my-properties")
+    public String GetALlRegisteredProperty(HttpSession session, Model model) {
+        RoomUserInfoEntity loggedInUser = (RoomUserInfoEntity) session.getAttribute("loggedInUser");
+
+        // Safety check
+        if (loggedInUser == null) {
+            return "redirect:/login";  // or wherever your login is
+        }
+
+
+
+        List<PropertyEntity> myProperties = propertyService.getALlRegisteredProperty(loggedInUser.getId());
+        System.out.println("Logged in user ID: " + loggedInUser.getId());
+        System.out.println("Number of properties found: " + myProperties.size());
+
+        if (!myProperties.isEmpty()) {
+            System.out.println("First property title: " + myProperties.get(0).getTitle());
+            System.out.println("First property ID: " + myProperties.get(0).getId());
+        } else {
+            System.out.println("No properties found for this user.");
+        }
+        model.addAttribute("user", loggedInUser);
+        model.addAttribute("properties", myProperties);
+
+
+        return "myProperties" ;
+    }
+
 }
